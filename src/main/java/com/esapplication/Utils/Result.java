@@ -17,25 +17,26 @@ public class Result extends HashMap<String, Object> {
 		put("code", 200);
 	}
 	
-	public Result(int code, String msg) {
+	public Result(Integer code, String msg) {
 		put("code", code);
 		put("msg", msg);
 	}
 	
-	public Result(int code, String msg, JSONObject data) {
+	public Result(Integer code, String msg, JSONObject data) {
 		put("code", code);
 		put("msg", msg);
 		put("data", data);
 	}
 	
-	public static Result result(int code, String msg, JSONObject data) {
+	public static Result result(Integer code, String msg, JSONObject data) {
 		return new Result(code, msg, data);
 	}
 	
-	public static Result result2(int code, String msg) {
+	public static Result result2(Integer code, String msg) {
 		return new Result(code, msg);
 	}
-	public static Result result3(int code, String msg, String data) {
+
+	public static Result result3(Integer code, String msg, String data) {
 		Result r = new Result();
 		r.put("code", code);
 		r.put("msg", msg);
@@ -43,7 +44,7 @@ public class Result extends HashMap<String, Object> {
 		return r;
 	}
 	
-	public static Result result4(int code, String msg, com.alibaba.fastjson.JSONObject data) {
+	public static Result result4(Integer code, String msg, com.alibaba.fastjson.JSONObject data) {
 		Result r = new Result();
 		r.put("code", code);
 		r.put("msg", msg);
@@ -52,17 +53,18 @@ public class Result extends HashMap<String, Object> {
 	}
 
 	public static Result error() {
-		return error(500, "未知异常，请联系管理员吧");
+		return error(-1, "未知异常，请联系管理员吧");
 	}
 
 	public static Result error(String msg) {
 		return error(500, msg);
 	}
 
-	public static Result error(int code, String msg) {
+	public static Result error(Integer code, String msg) {
 		Result r = new Result();
 		r.put("code", code);
 		r.put("msg", msg);
+		r.put("data", null);
 		return r;
 	}
 
@@ -81,6 +83,8 @@ public class Result extends HashMap<String, Object> {
 	public static Result ok() {
 		Result r = new Result();
 		r.put("msg", "success");
+		r.put("code", 0);
+		r.put("data", null);
 		return r;
 	}
 

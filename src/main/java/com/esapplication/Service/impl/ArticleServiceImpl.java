@@ -54,7 +54,6 @@ public class ArticleServiceImpl implements ArticleService {
                     + ",this tutorial tell you how to integrete springboot with spring-data-elasticsearch");
             article.setPostTime(new Date());
             article.setClickCount(1L);
-            System.out.println(article);
             articleSearchRepository.save(article);
         }
 

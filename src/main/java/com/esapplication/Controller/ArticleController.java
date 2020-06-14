@@ -1,12 +1,15 @@
 package com.esapplication.Controller;
 import com.esapplication.Document.Article;
 import com.esapplication.Entity.SearchEntity;
+import com.esapplication.Enum.ResultEnum;
+import com.esapplication.Exception.ArticleException;
 import com.esapplication.Service.ArticleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.esapplication.Utils.Result;
+
 
 /**
  * Article Controller
@@ -24,12 +27,12 @@ public class ArticleController {
     //新增信息
     @PostMapping("/add")
     @ApiOperation("新增文章接口")
-    public Result saveArticle() {
+    public Result saveArticle(){
         try {
             articleService.save();
-        } catch (Exception e) {
-            System.out.println(e);
-            Result.error();
+        }
+        catch (Exception e) {
+            throw new ArticleException(ResultEnum.SAVE_INFO_ERROR);
         }
         return Result.ok();
     }
@@ -40,7 +43,8 @@ public class ArticleController {
         try {
             articleService.update(article);
         } catch (Exception e) {
-            return Result.error();
+
+            throw new ArticleException(ResultEnum.UPDATE_INFO_ERROR);
         }
         return Result.ok();
     }
@@ -48,25 +52,27 @@ public class ArticleController {
     //获取信息
     @GetMapping("/info")
     @ApiOperation("获取文章信息接口")
-    public Result getArticleById(Long id) {
-        Article article = null;
+    public Result getArticleById(Long id){
         try {
-            article = articleService.queryArticleById(id);
+            return Result.ok().put("data",articleService.queryArticleById(id));
+
         } catch (Exception e) {
-            return Result.error();
+
+            throw new ArticleException(ResultEnum.GET_INFO_ERROR);
         }
-        return Result.ok().put("Article",article);
     }
 
     //删除信息
     @GetMapping("/delete")
     @ApiOperation("删除文章接口")
     public Result deleteArticle(Long id) {
+
         try{
             articleService.deleteById(id);
+
         } catch (Exception e) {
-            System.out.println(e);
-            return Result.error();
+
+            throw new ArticleException(ResultEnum.DELETE_INFO_ERROR);
         }
         return Result.ok();
     }
@@ -78,8 +84,7 @@ public class ArticleController {
         try {
             return Result.ok().put("data",articleService.query(searchEntity.getKeyword()));
         } catch (Exception e) {
-            System.out.println(e);
+            throw new ArticleException(ResultEnum.QUERY_INFO_ERROR);
         }
-        return Result.error();
     }
 }
